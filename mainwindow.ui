@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>591</width>
+    <width>428</width>
     <height>247</height>
    </rect>
   </property>
@@ -25,7 +25,7 @@
      <rect>
       <x>50</x>
       <y>20</y>
-      <width>493</width>
+      <width>331</width>
       <height>214</height>
      </rect>
     </property>
@@ -227,9 +227,9 @@
      <item>
       <layout class="QGridLayout" name="gridLayout_6">
        <item row="0" column="1">
-        <widget class="QLabel" name="label_L">
+        <widget class="QLabel" name="label_S">
          <property name="text">
-          <string>L</string>
+          <string>S</string>
          </property>
         </widget>
        </item>
@@ -241,7 +241,7 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QLineEdit" name="lineEdit_L">
+        <widget class="QLineEdit" name="lineEdit_S">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>3</horstretch>
@@ -266,7 +266,7 @@
         </widget>
        </item>
        <item row="1" column="2">
-        <widget class="QLineEdit" name="lineEdit_S">
+        <widget class="QLineEdit" name="lineEdit_L">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>3</horstretch>
@@ -291,9 +291,9 @@
         </widget>
        </item>
        <item row="0" column="2">
-        <widget class="QLabel" name="label_S">
+        <widget class="QLabel" name="label_L">
          <property name="text">
-          <string>S</string>
+          <string>L</string>
          </property>
         </widget>
        </item>

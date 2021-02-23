@@ -16,12 +16,20 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->lineEdit_Y, &QLineEdit::textEdited, this, &MainWindow::XYZChanged);
     connect(ui->lineEdit_Z, &QLineEdit::textEdited, this, &MainWindow::XYZChanged);
 
+    connect(ui->lineEdit_H, &QLineEdit::textEdited, this, &MainWindow::HSLChanged);
+    connect(ui->lineEdit_S, &QLineEdit::textEdited, this, &MainWindow::HSLChanged);
+    connect(ui->lineEdit_L, &QLineEdit::textEdited, this, &MainWindow::HSLChanged);
+
     CustomValiudator* validator =  new CustomValiudator();
     validator->setNotation(QDoubleValidator::ScientificNotation);
 
     ui->lineEdit_X->setValidator(validator);
     ui->lineEdit_Y->setValidator(validator);
     ui->lineEdit_Z->setValidator(validator);
+
+    ui->lineEdit_H->setValidator(validator);
+    ui->lineEdit_S->setValidator(validator);
+    ui->lineEdit_L->setValidator(validator);
 
     QIntValidator* int_validator = new QIntValidator();
     int_validator->setRange(0, 255);
@@ -40,14 +48,15 @@ void MainWindow::RGBChanged()
     line_edit = ui->lineEdit_B;
     rgb.b = line_edit->text().toInt();
 
-    auto [xyz, is_correct] = RGBToXYZ(rgb);
+    auto [xyz, is_correct1] = RGBToXYZ(rgb);
+    auto [hsl, is_correct2] = RGBToHSL(rgb);
 
-    SetCorretnessMessage(is_correct);
+    SetCorretnessMessage(is_correct1 && is_correct2);
 
-    if (is_correct) {
+    if (is_correct1 && is_correct2) {
         SetXYZ(xyz);
+        SetHSL(hsl);
     }
-    qDebug() << "RGB:\t" << rgb.r << ' ' << rgb.g << rgb.b;
 }
 
 void MainWindow::XYZChanged()
@@ -60,12 +69,34 @@ void MainWindow::XYZChanged()
     line_edit = ui->lineEdit_Z;
     xyz.z = line_edit->text().toDouble();
 
-    auto [rgb, is_correct] = XYZToRGB(xyz);
+    auto [rgb, is_correct1] = XYZToRGB(xyz);
+    auto [hsl, is_correct2] = RGBToHSL(rgb);
 
-    SetCorretnessMessage(is_correct);
+    SetCorretnessMessage(is_correct1 && is_correct2);
 
-    if (is_correct) {
+    if (is_correct1 && is_correct2) {
         SetRGB(rgb);
+        SetHSL(hsl);
+    }
+}
+
+void MainWindow::HSLChanged()
+{
+    HSL hsl;
+    QLineEdit *line_edit = ui->lineEdit_H;
+    hsl.h = line_edit->text().toDouble();
+    line_edit = ui->lineEdit_S;
+    hsl.s = line_edit->text().toDouble();
+    line_edit = ui->lineEdit_L;
+    hsl.l = line_edit->text().toDouble();
+
+    auto [rgb, is_correct1] = HSLToRGB(hsl);
+    auto [xyz, is_correct2] = RGBToXYZ(rgb);
+
+    SetCorretnessMessage(is_correct1 && is_correct2);
+    if (is_correct1 && is_correct2) {
+        SetRGB(rgb);
+        SetXYZ(xyz);
     }
 }
 
@@ -124,6 +155,90 @@ std::pair<MainWindow::RGB, bool> MainWindow::XYZToRGB(const MainWindow::XYZ &xyz
     return std::make_pair(rgb, true);
 }
 
+std::pair<MainWindow::RGB, bool> MainWindow::HSLToRGB(const MainWindow::HSL &hsl) {
+    if (hsl.h >= 360 + eps || hsl.h < 0 - eps ||
+        hsl.l > 1 + eps || hsl.l < 0 - eps ||
+        hsl.s > 1 + eps || hsl.s < 0 - eps) {
+        return std::make_pair(RGB(), false);
+    }
+
+    double c = (1 - std::abs(2 * hsl.l - 1)) * hsl.s;
+    double x = c * (1 - std::abs(std::fmod(hsl.h / 60., 2.) - 1));
+    double m = hsl.l - c / 2;
+
+    std::vector<double> rgb_;
+    if (hsl.h < 60) {
+        rgb_ = {c, x, 0};
+    } else if (hsl.h < 120) {
+        rgb_ = {x, c, 0};
+    } else if (hsl.h < 180) {
+        rgb_ = {0, c, x};
+    } else if (hsl.h < 240) {
+        rgb_ = {0, x, c};
+    } else if (hsl.h < 300) {
+        rgb_ = {x, 0, c};
+    } else {
+        rgb_ = {c, 0, x};
+    }
+
+    RGB rgb;
+    rgb.r = std::round((rgb_[0] + m) * 255);
+    rgb.g = std::round((rgb_[1] + m) * 255);
+    rgb.b = std::round((rgb_[2] + m) * 255);
+
+    if (rgb.r >= 256 || rgb.r < 0 ||
+        rgb.g >= 256 || rgb.g < 0 ||
+        rgb.b >= 256 || rgb.b < 0) {
+        return std::make_pair(RGB(), false);
+    }
+
+    return std::make_pair(rgb, true);
+}
+
+std::pair<MainWindow::HSL, bool> MainWindow::RGBToHSL(const MainWindow::RGB &rgb) {
+    if (rgb.r >= 256 || rgb.r < 0 ||
+        rgb.g >= 256 || rgb.g < 0 ||
+        rgb.b >= 256 || rgb.b < 0) {
+        return std::make_pair(HSL(), false);
+    }
+
+    double r = rgb.r / 255.;
+    double g = rgb.g / 255.;
+    double b = rgb.b / 255.;
+
+    double c_max = std::max({r, g, b});
+    double c_min = std::min({r, g, b});
+    double delta = c_max - c_min;
+
+    HSL hsl;
+    if (delta == 0) {
+        hsl.h = 0;
+    } else if (c_max == r) {
+        hsl.h = 60 * std::fmod(std::abs((g - b) / delta), 6.);
+    } else if (c_max == g) {
+        hsl.h = 60 * ((b - r) / delta + 2);
+    } else {
+        hsl.h = 60 * ((r - g) / delta + 4);
+    }
+    hsl.h = std::fmod(hsl.h, 360);
+
+    hsl.l = (c_max + c_min) / 2;
+
+    if (delta == 0) {
+        hsl.s = 0;
+    } else {
+        hsl.s = delta / (1 - std::abs(2 * hsl.l - 1));
+    }
+
+    if (hsl.h >= 360 + eps || hsl.h < 0 - eps ||
+        hsl.l > 1 + eps || hsl.l < 0 - eps ||
+        hsl.s > 1 + eps || hsl.s < 0 - eps) {
+        return std::make_pair(HSL(), false);
+    }
+    return std::make_pair(hsl, true);
+}
+
+
 
 void MainWindow::SetCorretnessMessage(bool is_correct) {
     QLabel *label = ui->label_incorrect_message;
@@ -155,6 +270,17 @@ void MainWindow::SetXYZ(const XYZ &xyz) {
 
     line_edit = ui->lineEdit_Z;
     line_edit->setText(QString::number(xyz.z));
+}
+
+void MainWindow::SetHSL(const HSL &hsl) {
+    QLineEdit *line_edit = ui->lineEdit_H;
+    line_edit->setText(QString::number(hsl.h));
+
+    line_edit = ui->lineEdit_S;
+    line_edit->setText(QString::number(hsl.s));
+
+    line_edit = ui->lineEdit_L;
+    line_edit->setText(QString::number(hsl.l));
 }
 
 MainWindow::~MainWindow()
