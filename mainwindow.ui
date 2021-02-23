@@ -6,13 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>591</width>
+    <height>247</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-    <horstretch>0</horstretch>
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>17</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
@@ -23,10 +23,10 @@
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>50</x>
       <y>20</y>
-      <width>261</width>
-      <height>121</height>
+      <width>493</width>
+      <height>214</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -47,13 +47,13 @@
           </size>
          </property>
          <property name="inputMask">
-          <string>999</string>
+          <string/>
          </property>
          <property name="text">
-          <string>255</string>
+          <string>0</string>
          </property>
          <property name="maxLength">
-          <number>3</number>
+          <number>32767</number>
          </property>
         </widget>
        </item>
@@ -76,13 +76,13 @@
           <bool>false</bool>
          </property>
          <property name="inputMask">
-          <string>999</string>
+          <string/>
          </property>
          <property name="text">
-          <string>255</string>
+          <string>0</string>
          </property>
          <property name="maxLength">
-          <number>3</number>
+          <number>32767</number>
          </property>
          <property name="clearButtonEnabled">
           <bool>false</bool>
@@ -118,13 +118,13 @@
           </size>
          </property>
          <property name="inputMask">
-          <string>999</string>
+          <string/>
          </property>
          <property name="text">
-          <string>255</string>
+          <string>0</string>
          </property>
          <property name="maxLength">
-          <number>3</number>
+          <number>32767</number>
          </property>
         </widget>
        </item>
@@ -132,8 +132,34 @@
      </item>
      <item>
       <layout class="QGridLayout" name="gridLayout_2">
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="lineEdit_Y">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="inputMask">
+          <string/>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+         <property name="maxLength">
+          <number>32767</number>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>X</string>
+         </property>
+        </widget>
+       </item>
        <item row="1" column="0">
-        <widget class="QLineEdit" name="lineEdit_R_2">
+        <widget class="QLineEdit" name="lineEdit_X">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -147,13 +173,13 @@
           </size>
          </property>
          <property name="inputMask">
-          <string>999</string>
+          <string/>
          </property>
          <property name="text">
-          <string>255</string>
+          <string>0</string>
          </property>
          <property name="maxLength">
-          <number>3</number>
+          <number>32767</number>
          </property>
         </widget>
        </item>
@@ -164,8 +190,15 @@
          </property>
         </widget>
        </item>
+       <item row="0" column="2">
+        <widget class="QLabel" name="label_6">
+         <property name="text">
+          <string>Z</string>
+         </property>
+        </widget>
+       </item>
        <item row="1" column="2">
-        <widget class="QLineEdit" name="lineEdit_B_2">
+        <widget class="QLineEdit" name="lineEdit_Z">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -176,49 +209,123 @@
           <bool>false</bool>
          </property>
          <property name="inputMask">
-          <string>999</string>
+          <string/>
          </property>
          <property name="text">
-          <string>255</string>
+          <string>0</string>
          </property>
          <property name="maxLength">
-          <number>3</number>
+          <number>32767</number>
          </property>
          <property name="clearButtonEnabled">
           <bool>false</bool>
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
-        <widget class="QLineEdit" name="lineEdit_G_2">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="inputMask">
-          <string>999</string>
-         </property>
+      </layout>
+     </item>
+     <item>
+      <layout class="QGridLayout" name="gridLayout_6">
+       <item row="0" column="1">
+        <widget class="QLabel" name="label_L">
          <property name="text">
-          <string>255</string>
-         </property>
-         <property name="maxLength">
-          <number>3</number>
+          <string>L</string>
          </property>
         </widget>
        </item>
        <item row="0" column="0">
-        <widget class="QLabel" name="label_5">
+        <widget class="QLabel" name="label_H">
          <property name="text">
-          <string>X</string>
+          <string>H</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="lineEdit_L">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>3</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="baseSize">
+          <size>
+           <width>3</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="inputMask">
+          <string/>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+         <property name="maxLength">
+          <number>32767</number>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QLineEdit" name="lineEdit_S">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>3</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="acceptDrops">
+          <bool>false</bool>
+         </property>
+         <property name="inputMask">
+          <string/>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+         <property name="maxLength">
+          <number>32767</number>
+         </property>
+         <property name="clearButtonEnabled">
+          <bool>false</bool>
          </property>
         </widget>
        </item>
        <item row="0" column="2">
-        <widget class="QLabel" name="label_6">
+        <widget class="QLabel" name="label_S">
          <property name="text">
-          <string>Z</string>
+          <string>S</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLineEdit" name="lineEdit_H">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>3</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="baseSize">
+          <size>
+           <width>3</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="inputMask">
+          <string/>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+         <property name="maxLength">
+          <number>32767</number>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_incorrect_message">
+         <property name="text">
+          <string/>
          </property>
         </widget>
        </item>
