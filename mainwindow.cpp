@@ -86,9 +86,9 @@ void MainWindow::HSLChanged()
     QLineEdit *line_edit = ui->lineEdit_H;
     hsl.h = line_edit->text().toDouble();
     line_edit = ui->lineEdit_S;
-    hsl.s = line_edit->text().toDouble();
+    hsl.s = line_edit->text().toDouble() / 100.;
     line_edit = ui->lineEdit_L;
-    hsl.l = line_edit->text().toDouble();
+    hsl.l = line_edit->text().toDouble() / 100.;
 
     auto [rgb, is_correct1] = HSLToRGB(hsl);
     auto [xyz, is_correct2] = RGBToXYZ(rgb);
@@ -277,10 +277,10 @@ void MainWindow::SetHSL(const HSL &hsl) {
     line_edit->setText(QString::number(hsl.h));
 
     line_edit = ui->lineEdit_S;
-    line_edit->setText(QString::number(hsl.s));
+    line_edit->setText(QString::number(hsl.s * 100));
 
     line_edit = ui->lineEdit_L;
-    line_edit->setText(QString::number(hsl.l));
+    line_edit->setText(QString::number(hsl.l * 100));
 }
 
 MainWindow::~MainWindow()
